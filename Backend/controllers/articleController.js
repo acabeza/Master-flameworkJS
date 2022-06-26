@@ -142,7 +142,74 @@ var controller = {
                 status: 'success',
                 article
             });
-        })
+        });
+    },
+    update: (req, res) => {
+        //Recoger el id del articulo por la url
+        var articleId = req.params.id;
+        //Recoger los datos que llegan por put
+        var params = req.body;
+        //Validar datos
+        try {
+            var validate_title = !validator.isEmpty(params.title);
+            var validate_content = !validator.isEmpty(params.content);
+        }catch (err) {
+            return res.status(200).send({
+                status: 'error',
+                message: 'Faltan datos por validar'
+            })
+        }
+        if (validate_content && validate_title){
+            //Find and update
+            Article.findOneAndUpdate({_id: articleId}, params, {new: true}, (err, articleUpdated) => {
+                if (err){
+                    return res.status(500).send({
+                        status: 'error',
+                        message: 'Error al actualizar !!!'
+                    });
+                }
+                if (!articleUpdated){
+                    return res.status(404).send({
+                        status: 'error',
+                        message: 'No existe ningún articulo !!!'
+                    });
+                }
+
+                return res.status(200).send({
+                    status: 'success',
+                    article: articleUpdated
+                });
+            })
+        }else {
+            return res.status(200).send({
+                status: 'error',
+                message: 'La validación no es correcta!!!'
+            })
+        }
+    },
+    delete: (req, res) => {
+        //Recoger el id del articulo por la url
+        var articleId = req.params.id;
+        //Find and delete
+            Article.findOneAndDelete({_id: articleId}, (err, articleRemove) => {
+                if (err){
+                    return res.status(500).send({
+                        status: 'error',
+                        message: 'Error al eliminar !!!'
+                    });
+                }
+                if (!articleRemove){
+                    return res.status(404).send({
+                        status: 'error',
+                        message: 'No existe ningún articulo !!!'
+                    });
+                }
+
+                return res.status(200).send({
+                    status: 'success',
+                    article: articleRemove
+                });
+            });
     }
 }; // end controller
 
