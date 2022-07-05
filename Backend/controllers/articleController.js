@@ -2,6 +2,8 @@
 
 var validator = require('validator');
 var Article = require('../models/articleModel');
+var fs = require('fs');
+var path = require('path');
 var controller = {
     datosCurso: (request, response) => {
         var hola = request.body.hola;
@@ -210,6 +212,61 @@ var controller = {
                     article: articleRemove
                 });
             });
+    }, 
+    upload: (req, res) => {
+        //Configurar el modulo connect multiparty router/article.js
+
+        //Recoger el fichero de la petición 
+        var file_name = 'Imagen no subida...';
+        
+        if (!req.files){
+            return res.status(404).send({
+                status: 'error',
+                message: file_name
+            });
+        }
+        //Conseguir el nombre y la extensión del archivo
+        var file_path = req.files.file0.path;
+        var file_split = file_path.split('\\');
+
+        // * ADVERTENCIA * EN LUNUX O MAC
+        // var file_split = file_path.split('\');
+
+        //Nombre del archivo
+        var file_name = file_split[2];
+
+        //Extensión del fichero
+        var extension_split = file_name.split('\.');
+        var file_ext = extension_split[1];
+        //Comprobar la extension, solo imagenes, si es invalido borrar el fichero
+        if (file_ext != 'png' && file_ext != 'jpg' && file_ext != 'jpeg' && file_ext != 'gif') {
+            // borrar el archivo subido
+            fs.unlink(file_path, (err => {
+                return res.status(200).send({
+                    status: 'error',
+                    nessage: 'La extensión de la imagen no es valida'
+                })
+            }))
+        } else {
+        //Si todo es valido, sacamos id del artículo
+        var articleId = req.params.id;
+        //Buscar el articulo, asignarle el nombre de la imagen y actualizarlo
+            Article.findOneAndUpdate({_id:  articleId}, {image: file_name}, {new:true}, (err, articleUpdated) => {
+                if (err || !articleUpdated) {
+                    return res.status(200).send({
+                        status: 'error',
+                        message: 'error al guardar la imagen del artículo'
+                    });
+                }
+                
+                return res.status(200).send({
+                    status: 'success',
+                    article: articleUpdated
+                });
+            })
+        }
+        
+        
     }
 }; // end controller
 
