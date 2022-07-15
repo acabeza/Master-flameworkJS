@@ -4,6 +4,7 @@ var validator = require('validator');
 var Article = require('../models/articleModel');
 var fs = require('fs');
 var path = require('path');
+const { exists } = require('../models/articleModel');
 var controller = {
     datosCurso: (request, response) => {
         var hola = request.body.hola;
@@ -267,6 +268,50 @@ var controller = {
         }
         
         
+    }, 
+
+    getImage:  (req, res) => {
+        var file = req.params.image;
+        var path_file = './upload/articles/'+file;
+        fs.exists(path_file, (exists) => {
+            if (exists){
+                return res.sendFile(path.resolve(path_file));
+            } else {
+                return res.status(404).send({
+                    status: 'success',
+                    message: 'La imagen no existe'
+                });
+            }
+        });
+    },
+
+    search: (req, res) => {
+        //Sacar el string a buscar
+        var search_string = req.params.search;
+        //Find or
+        Article.find({ "$or": [
+            {"title": {"$regex": search_string, "$options": "i"}},
+            {"content": {"$regex": search_string, "$options": "i"}}
+        ]}).sort([['date', 'descending']])
+        .exec((err, articles) => {
+            if(err) {
+                return res.status(500).send({
+                    status: 'error',
+                    message: 'Error en la petición !!'
+                })
+            }
+
+            if(!articles || articles.length <= 0) {
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'No hay artículos que coincidan con tu busquedad !!'
+                })
+            }
+            return res.status(200).send({
+                status: 'success',
+                articles
+            })
+        })
     }
 }; // end controller
 

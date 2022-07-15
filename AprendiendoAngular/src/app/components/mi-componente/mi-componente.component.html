@@ -1,0 +1,7 @@
+<h1> {{titulo}} 1 </h1>
+<p> {{comentario}}</p>
+
+<button (click)="ocultarPeliculas()">Ocultar peliculas</button>
+<div *ngIf="mostrarPeliculas">
+    <peliculas></peliculas>
+</div>
