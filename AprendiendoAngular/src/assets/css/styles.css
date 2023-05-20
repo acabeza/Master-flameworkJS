@@ -81,8 +81,8 @@ body {
     transition: 300ms all;
 }
 
-#menu:hover {
-    color: rgba(241,73,55,1);
+#menu a:hover, .active{
+    color: rgba(241,73,55,1) !important;
 }
 
 .center {
