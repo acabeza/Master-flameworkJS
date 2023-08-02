@@ -290,6 +290,7 @@ textarea {
 .article-item .image-wrap img {
     height: 100%;
     text-align: center;
+    width: inherit;
 }
 
 .article-item h2 {
@@ -338,6 +339,26 @@ textarea {
     margin-top: 15px;
     margin-bottom: 0px;
     border: none;
+}
+
+.year-green{
+    display: block;
+    background: green;
+    color: white;
+    padding: 5px;
+    width: 121px;
+    text-align: center;
+    height: 100px;
+}
+
+.year-red{
+    display: block;
+    background: red;
+    color: white;
+    padding: 5px;
+    width: 121px;
+    text-align: center;
+    height: 100px;
 }
 
 

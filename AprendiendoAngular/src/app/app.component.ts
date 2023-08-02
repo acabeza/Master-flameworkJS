@@ -8,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public title = 'Curso de Angular';
+  public homeText = 'Bienvenido al Curso de Angular';
 }
