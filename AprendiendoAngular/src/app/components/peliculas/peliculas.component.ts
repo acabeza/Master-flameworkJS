@@ -1,10 +1,12 @@
 import { Component, OnInit, DoCheck, OnDestroy } from '@angular/core';
 import { Pelicula } from '../../models/pelicula'
+import { PeliculaService } from 'src/app/services/peliculas.service';
 
 @Component({
   selector: 'peliculas',
   templateUrl: './peliculas.component.html',
-  styleUrls: ['./peliculas.component.css']
+  styleUrls: ['./peliculas.component.css'],
+  providers: [PeliculaService]
 })
 export class PeliculasComponent implements OnInit, DoCheck, OnDestroy {
 
@@ -13,16 +15,16 @@ export class PeliculasComponent implements OnInit, DoCheck, OnDestroy {
   public favorita?: Pelicula;
   public fecha: any;
 
-  constructor() { 
+  constructor(private _peliculaService: PeliculaService) { 
     this.titulo = "Pelicula";
-    this.peliculas = [new Pelicula("Spiderman 4", 2015, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJu1HweJrWcNfsFbbX_v6bSslQhcVunqSMiTgAtzhpFx4DTPaEst3XQUf3ioDgsUwwbVI&usqp=CAU"),
-  new Pelicula("Los vengadores", 2018, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5NR3LEGTMehbVboo2xMYEM9L_VSkdHLwpRg&usqp=CAU")]
+    this.peliculas = this._peliculaService.getPeliculas();
     console.log("Constructor Lanzado");
     this.fecha = new Date(2020, 8, 12);
   }
 
   ngOnInit(): void {
     console.log("Componente Lanzado");
+    console.log(this._peliculaService.holaMundo());
   }
 
   ngDoCheck(): void {

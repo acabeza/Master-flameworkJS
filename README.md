@@ -1,11 +1,12 @@
 # Master-flameworkJS
 
-## Commands  
-### RUN ANGULAR #####
-# ng serve
+## Commands: 
+
+### RUN PROJECT ANGULAR #####
+# cd AprendiendoAngular ng serve
 
 ### RUN DB ###
 # execute mongod.exe
 
 ### RUN BACKEND ###
-#  npm start
+# cd Backend npm start

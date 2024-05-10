@@ -1,0 +1,22 @@
+<app-slider [nombre]="'Blog'" [size]="'small'"></app-slider>
+
+
+<div class="center">
+    <section id="content">
+        <article class="article-item article-detail">
+            <div class="image-wrap">
+                <img src="{{url + 'get-image/' + article.image}}" alt="{{article.title}}" *ngIf="article.image"/>
+                <img src="assets/images/default.png" alt="{{article.title}}" *ngIf="!article.image"/>
+            </div>
+            <h1 class="subheader">{{article.title}}</h1>
+            <span class="date">
+                {{ article.date | locale: 'es' | timeAgo }}
+            </span>
+            <p id="p-item">
+                {{ article.content }}
+            </p>  
+                <div class="clearfix"></div>
+        </article>
+    </section>
+    <app-sidebar></app-sidebar>
+</div>

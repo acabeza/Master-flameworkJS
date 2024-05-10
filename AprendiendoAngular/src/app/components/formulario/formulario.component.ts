@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-formulario',
@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class FormularioComponent implements OnInit {
 
   public user: any;
+  public campo: string = '';
+
   constructor() { 
     this.user = {
       nombre: '',
@@ -18,6 +20,22 @@ export class FormularioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onSubmit() {
+    console.log(this);
+  }
+
+  hasDadoClick() {
+    alert('Has dado click');
+  }
+
+  hasSalido() {
+    alert('Has salido');
+  }
+
+  hasKeyUp() {
+    alert('Has hecho keyup');
   }
 
 }
