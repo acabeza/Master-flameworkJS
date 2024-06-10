@@ -21,8 +21,8 @@ import { EsparPipe } from './pipes/espar.pipe';
 import { ArticlesComponent } from './components/articles/articles.component';
 import { AgoPipe } from './pipes/agoPipe';
 import { ArticleComponent } from './components/article/article.component';
-import { MomentModule } from 'angular2-moment';
-import { LocalePipe } from './pipes/localePipe';
+import { MomentModule } from 'ngx-moment';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { LocalePipe } from './pipes/localePipe';
     ArticlesComponent,
     AgoPipe,
     ArticleComponent,
-    LocalePipe
+    SearchComponent
   ],
   imports: [
     BrowserModule,

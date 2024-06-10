@@ -11,6 +11,8 @@ import {PeliculasComponent} from "./components/peliculas/peliculas.component";
 import {PaginaComponent} from "./components/pagina/pagina.component";
 import {ErrorComponent} from "./components/error/error.component";
 import {ArticleComponent} from "./components/article/article.component";
+import {SearchComponent} from "./components/search/search.component";
+
 // Array de rutas
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -21,6 +23,7 @@ const appRoutes: Routes = [
     {path: 'peliculas', component: PeliculasComponent},
     {path: 'pagina-de-pruebas', component: PaginaComponent},
     {path: 'pagina-de-pruebas/:nombre/:apellidos', component: PaginaComponent},
+    {path: 'buscar/:search', component: SearchComponent},
     {path: '**', component: ErrorComponent}
 ];
 
