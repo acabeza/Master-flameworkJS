@@ -23,6 +23,7 @@ import { AgoPipe } from './pipes/agoPipe';
 import { ArticleComponent } from './components/article/article.component';
 import { MomentModule } from 'ngx-moment';
 import { SearchComponent } from './components/search/search.component';
+import { ArticleNewComponent } from './components/article-new/article-new.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { SearchComponent } from './components/search/search.component';
     ArticlesComponent,
     AgoPipe,
     ArticleComponent,
-    SearchComponent
+    SearchComponent,
+    ArticleNewComponent
   ],
   imports: [
     BrowserModule,
