@@ -8,7 +8,7 @@ const { exists } = require('../models/articleModel');
 var controller = {
     datosCurso: (request, response) => {
         var hola = request.body.hola;
-    
+
         return response.status(200).send({
             curso: "Master en Framework-JS",
             Autor: "Alejandro",
@@ -31,7 +31,7 @@ var controller = {
             var validate_title = !validator.isEmpty(params.title);
             var validate_content = !validator.isEmpty(params.content);
 
-        }catch(err) {
+        } catch (err) {
             return response.status(200).send({
                 status: 'error',
                 message: 'Faltan datos por enviar'
@@ -42,33 +42,33 @@ var controller = {
         var article = new Article();
 
         //Asignar valores
-        article.title = params.title;
-        article.content = params.content;
-        article.image = null;
+        article.title = params.title ? params.title : null;
+        article.content = params.content ? params.content : null;
+        article.image = params.image ? params.image : null;
         //Guardar Articulo
 
         if (validate_title && validate_content) {
 
-        article.save((err, articleStored) => {
-            if (err || !articleStored) {
-                return response.status(404).send({
-                    status: 'error',
-                    message: 'El articulo no se ha guardado!!'
-                })
-            }
+            article.save((err, articleStored) => {
+                if (err || !articleStored) {
+                    return response.status(404).send({
+                        status: 'error',
+                        message: 'El articulo no se ha guardado!!'
+                    })
+                }
 
-            //Devolver respuesta
-            return response.status(200).send({
-                status: 'success',
-                message: articleStored
+                //Devolver respuesta
+                return response.status(200).send({
+                    status: 'success',
+                    message: articleStored
+                })
             })
-        })
 
         } else {
             return response.status(200).send({
                 message: 'Los datos no son validos'
             })
-        }   
+        }
     },
     getArticles: (req, res) => {
         //Find
@@ -134,7 +134,7 @@ var controller = {
         }
         //Buscar el artículo
         Article.findById(articleId, (err, article) => {
-            if(err || !article) {
+            if (err || !article) {
                 return res.status(404).send({
                     status: 'error',
                     message: 'No existe el artículo!!'
@@ -156,22 +156,22 @@ var controller = {
         try {
             var validate_title = !validator.isEmpty(params.title);
             var validate_content = !validator.isEmpty(params.content);
-        }catch (err) {
+        } catch (err) {
             return res.status(200).send({
                 status: 'error',
                 message: 'Faltan datos por validar'
             })
         }
-        if (validate_content && validate_title){
+        if (validate_content && validate_title) {
             //Find and update
-            Article.findOneAndUpdate({_id: articleId}, params, {new: true}, (err, articleUpdated) => {
-                if (err){
+            Article.findOneAndUpdate({ _id: articleId }, params, { new: true }, (err, articleUpdated) => {
+                if (err) {
                     return res.status(500).send({
                         status: 'error',
                         message: 'Error al actualizar !!!'
                     });
                 }
-                if (!articleUpdated){
+                if (!articleUpdated) {
                     return res.status(404).send({
                         status: 'error',
                         message: 'No existe ningún articulo !!!'
@@ -183,7 +183,7 @@ var controller = {
                     article: articleUpdated
                 });
             })
-        }else {
+        } else {
             return res.status(200).send({
                 status: 'error',
                 message: 'La validación no es correcta!!!'
@@ -194,33 +194,33 @@ var controller = {
         //Recoger el id del articulo por la url
         var articleId = req.params.id;
         //Find and delete
-            Article.findOneAndDelete({_id: articleId}, (err, articleRemove) => {
-                if (err){
-                    return res.status(500).send({
-                        status: 'error',
-                        message: 'Error al eliminar !!!'
-                    });
-                }
-                if (!articleRemove){
-                    return res.status(404).send({
-                        status: 'error',
-                        message: 'No existe ningún articulo !!!'
-                    });
-                }
-
-                return res.status(200).send({
-                    status: 'success',
-                    article: articleRemove
+        Article.findOneAndDelete({ _id: articleId }, (err, articleRemove) => {
+            if (err) {
+                return res.status(500).send({
+                    status: 'error',
+                    message: 'Error al eliminar !!!'
                 });
+            }
+            if (!articleRemove) {
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'No existe ningún articulo !!!'
+                });
+            }
+
+            return res.status(200).send({
+                status: 'success',
+                article: articleRemove
             });
-    }, 
+        });
+    },
     upload: (req, res) => {
         //Configurar el modulo connect multiparty router/article.js
 
         //Recoger el fichero de la petición 
         var file_name = 'Imagen no subida...';
-        
-        if (!req.files){
+
+        if (!req.files) {
             return res.status(404).send({
                 status: 'error',
                 message: file_name
@@ -249,32 +249,37 @@ var controller = {
                 })
             }))
         } else {
-        //Si todo es valido, sacamos id del artículo
-        var articleId = req.params.id;
-        //Buscar el articulo, asignarle el nombre de la imagen y actualizarlo
-            Article.findOneAndUpdate({_id:  articleId}, {image: file_name}, {new:true}, (err, articleUpdated) => {
-                if (err || !articleUpdated) {
+            //Si todo es valido, sacamos id del artículo
+            var articleId = req.params.id;
+            if (articleId) {
+                //Buscar el articulo, asignarle el nombre de la imagen y actualizarlo
+                Article.findOneAndUpdate({ _id: articleId }, { image: file_name }, { new: true }, (err, articleUpdated) => {
+                    if (err || !articleUpdated) {
+                        return res.status(200).send({
+                            status: 'error',
+                            message: 'error al guardar la imagen del artículo'
+                        });
+                    }
+
                     return res.status(200).send({
-                        status: 'error',
-                        message: 'error al guardar la imagen del artículo'
+                        status: 'success',
+                        article: articleUpdated
                     });
-                }
-                
+                })
+            } else {
                 return res.status(200).send({
                     status: 'success',
-                    article: articleUpdated
+                    image: file_name
                 });
-            })
+            }
         }
-        
-        
-    }, 
+    },
 
-    getImage:  (req, res) => {
+    getImage: (req, res) => {
         var file = req.params.image;
-        var path_file = './upload/articles/'+file;
+        var path_file = './upload/articles/' + file;
         fs.exists(path_file, (exists) => {
-            if (exists){
+            if (exists) {
                 return res.sendFile(path.resolve(path_file));
             } else {
                 return res.status(404).send({
@@ -289,29 +294,31 @@ var controller = {
         //Sacar el string a buscar
         var search_string = req.params.search;
         //Find or
-        Article.find({ "$or": [
-            {"title": {"$regex": search_string, "$options": "i"}},
-            {"content": {"$regex": search_string, "$options": "i"}}
-        ]}).sort([['date', 'descending']])
-        .exec((err, articles) => {
-            if(err) {
-                return res.status(500).send({
-                    status: 'error',
-                    message: 'Error en la petición !!'
-                })
-            }
+        Article.find({
+            "$or": [
+                { "title": { "$regex": search_string, "$options": "i" } },
+                { "content": { "$regex": search_string, "$options": "i" } }
+            ]
+        }).sort([['date', 'descending']])
+            .exec((err, articles) => {
+                if (err) {
+                    return res.status(500).send({
+                        status: 'error',
+                        message: 'Error en la petición !!'
+                    })
+                }
 
-            if(!articles || articles.length <= 0) {
-                return res.status(404).send({
-                    status: 'error',
-                    message: 'No hay artículos que coincidan con tu busquedad !!'
+                if (!articles || articles.length <= 0) {
+                    return res.status(404).send({
+                        status: 'error',
+                        message: 'No hay artículos que coincidan con tu busquedad !!'
+                    })
+                }
+                return res.status(200).send({
+                    status: 'success',
+                    articles
                 })
-            }
-            return res.status(200).send({
-                status: 'success',
-                articles
             })
-        })
     }
 }; // end controller
 

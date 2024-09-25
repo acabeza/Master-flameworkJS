@@ -263,6 +263,13 @@ textarea {
     transition: 300ms all;
 }
 
+.btn.up_btn.afu-attach-pin {
+    display: block !important;
+    width: 100% !important;
+    max-width: 90% !important;
+    margin-top: 15px !important;
+}
+
 input[type="text"]:focus,
 input[type="file"]:focus, 
 textarea { 
@@ -386,6 +393,10 @@ textarea {
     width: 121px;
     text-align: center;
     height: 100px;
+}
+
+.image-thumb img {
+    width: 150px;
 }
 
 

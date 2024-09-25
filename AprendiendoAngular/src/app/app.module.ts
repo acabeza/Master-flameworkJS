@@ -24,6 +24,8 @@ import { ArticleComponent } from './components/article/article.component';
 import { MomentModule } from 'ngx-moment';
 import { SearchComponent } from './components/search/search.component';
 import { ArticleNewComponent } from './components/article-new/article-new.component';
+import { AngularFileUploaderModule } from "angular-file-uploader";
+import { ArticleEditComponent } from './components/article-edit/article-edit.component';
 
 @NgModule({
   declarations: [
@@ -46,14 +48,16 @@ import { ArticleNewComponent } from './components/article-new/article-new.compon
     AgoPipe,
     ArticleComponent,
     SearchComponent,
-    ArticleNewComponent
+    ArticleNewComponent,
+    ArticleEditComponent
   ],
   imports: [
     BrowserModule,
     routing,
     FormsModule,
     HttpClientModule,
-    MomentModule
+    MomentModule,
+    AngularFileUploaderModule
   ],
   //Servicios
   providers: [appRoutingProviders],
